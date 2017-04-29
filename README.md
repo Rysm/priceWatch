@@ -1,3 +1,3 @@
 # priceWatch
 
-An application that notifies the user of differnt price changes.
+An application that notifies the user of different price changes.
