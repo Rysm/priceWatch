@@ -1,1 +1,6 @@
-node_modules
+hooks/
+platforms/
+plugins/
+.idea/
+.sass-cache/
+node_modules/
