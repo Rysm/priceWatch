@@ -8,8 +8,16 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { Login } from '../pages/login/login';
+
+import {ResetPassword}from '../pages/reset-password/reset-password';
+import {Signup} from '../pages/signup/signup';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { AuthData } from '../providers/auth-data';
+
 
 @NgModule({
   declarations: [
@@ -17,7 +25,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+      TabsPage,
+      Login,
+      ResetPassword,
+      Signup
   ],
   imports: [
     BrowserModule,
@@ -29,9 +40,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+      TabsPage,
+      Login,
+      ResetPassword,
+      Signup
   ],
   providers: [
+      AuthData,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
