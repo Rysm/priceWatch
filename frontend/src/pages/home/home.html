@@ -1,12 +1,26 @@
 <ion-header>
-  <ion-navbar>
+  <ion-toolbar>
+    <ion-buttons>
+      <button ion-button icon-only (click)="logOut()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  you are authenticated
-  <button ion-button icon-only (click)="logOut()"> log out
-    <ion-icon name="log-out"></ion-icon>
-  </button>  
+  <button ion-button full color="secondary" icon-right (click)="addWatch()">
+    Watch
+    <ion-icon name="add"></ion-icon>
+  </button>
+  <ion-list>
+    <ion-card *ngFor="let item of wishList">
+      <img src={{item.img}} alt={{item.name}} />
+      <ion-card-content>
+        <ion-card-title>{{item.name}}</ion-card-title>
+        <p>Current Price: ${{item.price}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>

@@ -14,33 +14,33 @@ import firebase from 'firebase';
 })
 export class MyApp {
 
-  rootPage:any = TabsPage;
+  rootPage: any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen
+  ) {
 
     // Initialize Firebase
     var config = {
-    apiKey: "AIzaSyDVQgtdE8ArBCiB4kubfGZflY1kegpzZVY",
-    authDomain: "pricewatch-36aeb.firebaseapp.com",
-    databaseURL: "https://pricewatch-36aeb.firebaseio.com",
-    projectId: "pricewatch-36aeb",
-    storageBucket: "pricewatch-36aeb.appspot.com",
-    messagingSenderId: "900764580669"
+      apiKey: "AIzaSyDVQgtdE8ArBCiB4kubfGZflY1kegpzZVY",
+      authDomain: "pricewatch-36aeb.firebaseapp.com",
+      databaseURL: "https://pricewatch-36aeb.firebaseio.com",
+      projectId: "pricewatch-36aeb",
+      storageBucket: "pricewatch-36aeb.appspot.com",
+      messagingSenderId: "900764580669"
     };
+
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
-
-        if (!user) {
-            console.log("not login");
-            this.rootPage = Login;
-
-
-        } else {
-            console.log("login");
-            this.rootPage = HomePage;
-
-        }
-
+      if (!user) {
+        console.log("not login");
+        this.rootPage = Login;
+      } else {
+        console.log("login");
+        this.rootPage = HomePage;
+      }
     });
 
     platform.ready().then(() => {
@@ -48,7 +48,6 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-
     });
   }
 }
