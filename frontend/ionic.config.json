@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "app_id": "0f33efa4",
-  "v2": true,
-  "typescript": true
+  "app_id": "ceb5af3e",
+  "type": "ionic-angular"
 }
