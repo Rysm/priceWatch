@@ -10,10 +10,12 @@ export class AuthData {
    * [loginUser We'll take an email and password and log the user into the firebase app]
    * @param  {string} email    [User's email address]
    * @param  {string} password [User's password]
+   * @param  {string} firstName [User's password]
+   * @param  {string} lastName [User's password]
    */
   loginUser(email: string, password: string): firebase.Promise<any> {
     return firebase.auth().signInWithEmailAndPassword(email, password);
-    
+
   }
 
   /**
@@ -23,16 +25,22 @@ export class AuthData {
    * that node to store the profile information.
    * @param  {string} email    [User's email address]
    * @param  {string} password [User's password]
+    * @param  {string} firstName [User's password]
+    * @param  {string} lastName [User's password]
    */
-  signupUser(email: string, password: string): firebase.Promise<any> {
+  signupUser(email: string, password: string, firstName: string, lastName: string, products: string, stores: string): firebase.Promise<any> {
       return firebase.auth().createUserWithEmailAndPassword(email, password).then((newUser) => {
          // firebase.database().ref('/users').child(email).set({
           //    firstName: "anonymous",
            //   id:newUser.uid,
          // });
         firebase.database().ref('/userProfile').child(newUser.uid).set({
-            firstName: "anonymous",
-             email: email
+             firstName: firstName,
+             lastName: lastName,
+             email: email,
+             products: products,
+             stores: stores,
+
       });
     });
   }
