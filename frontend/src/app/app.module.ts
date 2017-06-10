@@ -14,8 +14,8 @@ import { Login } from '../pages/login/login';
 import { ResetPassword } from '../pages/reset-password/reset-password';
 import { Signup } from '../pages/signup/signup';
 import { Modal } from '../pages/modal/modal';
-
 import { AuthData } from '../providers/auth-data';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { AuthData } from '../providers/auth-data';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
