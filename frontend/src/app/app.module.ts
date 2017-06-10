@@ -17,6 +17,14 @@ import { Modal } from '../pages/modal/modal';
 
 import { AuthData } from '../providers/auth-data';
 
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': '47e2356d'
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -31,7 +39,8 @@ import { AuthData } from '../providers/auth-data';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
