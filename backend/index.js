@@ -20,13 +20,13 @@ app.get('/', (req, res) => {
         amazonJob.start();
 });
 
+const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
 //Schedule an amazon job.
-var amazonJob = new CronJob('* 1 * * * * *', function(req, res){
+var amazonJob = new CronJob('* 1 * * * * *', function(req, res, uri){
 
     const PriceFinder = require('price-finder');
     const priceFinder = new PriceFinder();
-    const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
     priceFinder.findItemPrice(uri, function(err, price) {
 
