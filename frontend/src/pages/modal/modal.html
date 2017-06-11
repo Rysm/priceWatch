@@ -8,5 +8,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchKey"></ion-searchbar>
+  <button ion-button full icon-only (click)="onSearch()">
+    <ion-icon name="search"></ion-icon>
+  </button>
+
 </ion-content>

@@ -4,7 +4,6 @@ import { NavController, ModalController, AlertController } from 'ionic-angular';
 import { AuthData } from '../../providers/auth-data';
 import { Login } from '../login/login';
 import { Modal } from '../modal/modal';
-import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -20,19 +19,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public authData: AuthData,
-    private  http: Http
-  ) {
-    this.http = http;
-    this.navCtrl = navCtrl;
-    //nice
-    this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=10').map(res => res.json()).subscribe(data => {
-        this.posts = data.data.children;
-      },
-      err => {
-      console.log("Oops!");
-      });
-    };
-
+  ) { }
 
   ionViewWillEnter() {
     this.wishList = [
