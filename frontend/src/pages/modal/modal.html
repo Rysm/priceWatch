@@ -7,6 +7,34 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content padding>
   <ion-searchbar></ion-searchbar>
+
+  <ion-content padding>
+       <form [formGroup]="urlForm" (submit)="manualAdd()">
+
+       <ion-item>
+         <ion-label stacked>First URL</ion-label>
+         <ion-input #firstURL formControlName="firstURL" placeholder="first URL">
+           </ion-input>
+       </ion-item>
+
+       <ion-item>
+         <ion-label stacked>Second URL</ion-label>
+         <ion-input #secondURL formControlName="secondURL" placeholder="second URL">
+           </ion-input>
+       </ion-item>
+
+       <ion-item>
+         <ion-label stacked>Third URL</ion-label>
+         <ion-input #thirdURL formControlName="thirdURL" placeholder="third URL">
+           </ion-input>
+       </ion-item>
+
+       <button ion-button block type="submit">
+         Add By URL
+       </button>
+
+  </form>
 </ion-content>

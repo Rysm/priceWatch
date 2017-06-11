@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FormBuilder, Validators } from '@angular/forms';
 import firebase from 'firebase';
 
 @Component({
@@ -9,10 +10,47 @@ import firebase from 'firebase';
 
 export class Modal {
 
+  public urlForm;
+
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams
-  ) { }
+    public navParams: NavParams,
+    public formBuilder: FormBuilder,
+  ) {
+    this.urlForm = formBuilder.group({
+        firstURL: ['',],
+        secondURL: ['',],
+        thirdURL: ['',]
+    })
+  }
+
+  //processes the dank urls and add them to the firedank
+  manualAdd() {
+      if (!this.urlForm.valid) {
+          console.log(this.urlForm.value);
+      }
+      else{
+          //gets the dank user id
+          var user = firebase.auth().currentUser;
+          var fireDB = firebase.database();
+          var url = "userProfile/" + user.uid;
+          //console.log("user id " + user.uid);
+
+          //where to save shit
+          var ref = fireDB.ref(url);
+
+          //Attach the urls
+          ref.update({
+            "products": {
+              1: this.urlForm.value.firstURL,
+              2: this.urlForm.value.secondURL,
+              3: this.urlForm.value.thirdURL,
+            }
+          });
+
+      }
+
+    }
 
   close() {
     this.navCtrl.pop();
