@@ -35,10 +35,10 @@ export class MyApp {
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        console.log("Not logged in!");
+        alert("FUCKK.. Not logged in!");
         this.rootPage = Login;
       } else {
-        console.log("Logged in!");
+        alert("FUCK!! Logged in!");
         this.rootPage = HomePage;
       }
     });

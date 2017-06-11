@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import {
-  Push,
-  PushToken
-} from '@ionic/cloud-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
@@ -66,15 +62,6 @@ export class Login {
           alert.present();
         });
       });
-
-      this.push.register().then((t: PushToken) => {
-        return this.push.saveToken(t);
-      }).then((t: PushToken) => {
-        console.log('Token saved:', t.token);
-      });
-
-      this.loading = this.loadingCtrl.create();
-      this.loading.present();
     }
   }
 
