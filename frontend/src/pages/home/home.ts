@@ -6,6 +6,7 @@ import { Login } from '../login/login';
 import { Modal } from '../modal/modal';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-home',
@@ -25,8 +26,10 @@ export class HomePage {
     this.http = http;
     this.navCtrl = navCtrl;
     //nice
-    this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=10').map(res => res.json()).subscribe(data => {
-        this.posts = data.data.children;
+
+
+    this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=1').map(res => res.json()).subscribe(data => {
+      //  this.posts = data.data.children;
       },
       err => {
       console.log("Oops!");
@@ -53,7 +56,6 @@ export class HomePage {
       },
     ]
   }
-
 
   logOut() {
     let alert = this.alertCtrl.create({
@@ -83,5 +85,9 @@ export class HomePage {
   addWatch() {
     let modal = this.modalCtrl.create(Modal);
     modal.present();
+    
+    //gets the dank user id
+    var user = firebase.auth().currentUser;
+    console.log("user id " + user.uid);
   }
 }
