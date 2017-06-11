@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController,
-    AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { EmailValidator } from '../../validators/email';
@@ -29,6 +28,7 @@ export class Signup {
         public alertCtrl: AlertController) {
 
         this.signupForm = formBuilder.group({
+
             email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
             password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
             firstName: ['',],

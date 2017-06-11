@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const amazon = require('amazon-product-api');
 const CronJob = require('cron').CronJob;
+const PriceFinder = require('price-finder');
 const app = express();
 
 // Deals with cross origin access
@@ -13,7 +14,6 @@ app.use(bodyParser.json());
 
 // Initial expressJS page grab by client request
 app.post('/', (req, res) => {
-  const PriceFinder = require('price-finder');
   const priceFinder = new PriceFinder();
   const url = req.body.url;
 
@@ -42,17 +42,14 @@ app.post('/itemSearch', (req, res) => {
 const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
 //Schedule an amazon job.
-var amazonJob = new CronJob('* 1 * * * * *', function(req, res, uri){
-
-    const PriceFinder = require('price-finder');
+var amazonJob = new CronJob('* * 1 * * * *', function(req, res, uri) {
     const priceFinder = new PriceFinder();
-
     priceFinder.findItemPrice(uri, function(err, price) {
-
-        console.log("updated every minute: " + price);
-
+      console.log("updated every minute: " + price);
+      myPrice = price;
     });
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 8080;

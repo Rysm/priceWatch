@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, AlertController } from 'ionic-angular';
-
 import { AuthData } from '../../providers/auth-data';
 import { Login } from '../login/login';
 import { Modal } from '../modal/modal';
+import firebase from 'firebase';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -11,8 +11,8 @@ import 'rxjs/add/operator/map';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  // List of items user is watching
   wishList: any;
-  posts: any;
 
   constructor(
     public navCtrl: NavController,
@@ -21,6 +21,7 @@ export class HomePage {
     public authData: AuthData,
   ) { }
 
+  // Initialize wishlist by hardcoding it
   ionViewWillEnter() {
     this.wishList = [
       {
@@ -40,7 +41,6 @@ export class HomePage {
       },
     ]
   }
-
 
   logOut() {
     let alert = this.alertCtrl.create({
@@ -70,5 +70,8 @@ export class HomePage {
   addWatch() {
     let modal = this.modalCtrl.create(Modal);
     modal.present();
+
+    //gets the dank user id
+    var user = firebase.auth().currentUser;
   }
 }

@@ -1,26 +1,78 @@
 import { Component } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { FormBuilder, Validators } from '@angular/forms';
+import firebase from 'firebase';
 import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-modal',
   templateUrl: 'modal.html',
 })
+
 export class Modal {
 
+  // Our server hosted on Google
   serverAPI: any = 'http://lithe-climber-167308.appspot.com/';
-  gummyURL: any = 'https://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY';
+  // Url to be searched
   searchUrl: any = '';
+  // Keyword to be searched
   searchKey: any = '';
+  // List returned in response of item search
   searchResults: any;
+
+  public urlForm;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
-    private alertCtrl: AlertController
-  ) {  }
+    private alertCtrl: AlertController,
+    public formBuilder: FormBuilder
+  ) {
+    this.urlForm = formBuilder.group({
+        firstURL: ['',],
+        secondURL: ['',],
+        thirdURL: ['',]
+    })
+  }
+
+  //processes the dank urls and add them to the firedank
+  manualAdd() {
+
+      if (!this.urlForm.valid) {
+          console.log(this.urlForm.value);
+      }
+
+      else{
+          //gets the dank user id
+          var user = firebase.auth().currentUser;
+          var fireDB = firebase.database();
+          var url = "userProfile/" + user.uid;
+          //console.log("user id " + user.uid);
+
+          //where to save shit
+          var ref = fireDB.ref(url);
+
+          //Attach the urls
+          ref.update({
+            "products": {
+              1: this.urlForm.value.firstURL,
+              2: this.urlForm.value.secondURL,
+              3: this.urlForm.value.thirdURL,
+            }
+          });
+
+          firebase.auth().currentUser.getToken(/* forceRefresh */ true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+          }).catch(function(error) {
+            // Handle error
+          });
+
+      }
+
+    }
 
   close() {
     this.navCtrl.pop();
