@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
@@ -30,13 +34,14 @@ export class Login {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public authData: AuthData,
-    public nav: NavController) {
+    public nav: NavController,
+    public push: Push
+  ) {
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
-
   }
 
   loginUser(): void {
@@ -60,6 +65,12 @@ export class Login {
           });
           alert.present();
         });
+      });
+
+      this.push.register().then((t: PushToken) => {
+        return this.push.saveToken(t);
+      }).then((t: PushToken) => {
+        console.log('Token saved:', t.token);
       });
 
       this.loading = this.loadingCtrl.create();
