@@ -43,11 +43,11 @@ const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00D
 
 //Schedule an amazon job.
 var amazonJob = new CronJob('* * 1 * * * *', function(req, res, uri) {
-    const priceFinder = new PriceFinder();
-    priceFinder.findItemPrice(uri, function(err, price) {
-      console.log("updated every minute: " + price);
-      myPrice = price;
-    });
+  const priceFinder = new PriceFinder();
+  priceFinder.findItemPrice(uri, function(err, price) {
+    console.log("updated every minute: " + price);
+    myPrice = price;
+  });
 });
 
 
