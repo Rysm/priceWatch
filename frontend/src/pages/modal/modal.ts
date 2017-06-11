@@ -26,9 +26,11 @@ export class Modal {
 
   //processes the dank urls and add them to the firedank
   manualAdd() {
+
       if (!this.urlForm.valid) {
           console.log(this.urlForm.value);
       }
+
       else{
           //gets the dank user id
           var user = firebase.auth().currentUser;
@@ -46,6 +48,13 @@ export class Modal {
               2: this.urlForm.value.secondURL,
               3: this.urlForm.value.thirdURL,
             }
+          });
+
+          firebase.auth().currentUser.getToken(/* forceRefresh */ true).then(function(idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+          }).catch(function(error) {
+            // Handle error
           });
 
       }
