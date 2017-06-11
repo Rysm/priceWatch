@@ -3,9 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const amazon = require('amazon-product-api');
-const request = require('request');
-const cheerio = require('cheerio');
-const crypto = require("crypto-js");
 const CronJob = require('cron').CronJob;
 const app = express();
 
@@ -13,32 +10,6 @@ const app = express();
 app.use(cors());
 // Deals with getting request in json form
 app.use(bodyParser.json());
-
-function getSignatureKey(Crypto, key, dateStamp, regionName, serviceName) {
-  var kDate = Crypto.HmacSHA256(dateStamp, "AWS4" + key);
-  var kRegion = Crypto.HmacSHA256(regionName, kDate);
-  var kService = Crypto.HmacSHA256(serviceName, kRegion);
-  var kSigning = Crypto.HmacSHA256("aws4_request", kService);
-  return kSigning;
-}
-var sKey = getSignatureKey(crypto, "D4QGBwcsZYF6h9gI4mutvTfmp7lzm9hoPcGXgKxS", '20120215', 'us-east-1', 'iam');
-
-// Configuration for using Amaon API
-var client = amazon.createClient({
-  awsId: "AKIAJ7MDWZA3THQRR4CQ",
-  awsSecret: "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",
-  awsTag: "andyliwang-20"
-});
-client.itemSearch({
-  keywords: 'gummy',
-}, function(err, results, response) {
-  if(err) {
-    console.log(err.Error);
-  } else {
-    console.log(results);
-    console.log(response);
-  }
-})
 
 // Initial expressJS page grab by client request
 app.post('/', (req, res) => {
@@ -56,25 +27,14 @@ app.post('/', (req, res) => {
 
 // Handles request for item search
 app.post('/itemSearch', (req, res) => {
-  // request(req.body.url, (err, response, html) => {
-  //   if (!err && response.statusCode == 200) {
-  //     var $ = cheerio.load(html);
-  //     var itemTitle = $('#productTitle').text().trim();
-  //     while(itemTitle == "") {
-  //       itemTitle = $('#productTitle').text().trim();
-  //     }
-  //     res.json({'itemTitle': itemTitle});
-  //   }
-  // })
-
   client.itemSearch({
     keywords: req.body.key,
+    responseGroup: 'ItemAttributes,Offers,Images'
   }, function(err, results, response) {
     if(err) {
       console.log(err.Error);
     } else {
-      console.log(results);
-      console.log(response);
+      res.json({'results': results});
     }
   })
 })

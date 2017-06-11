@@ -3,8 +3,6 @@ import { Http, Headers } from '@angular/http';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import 'rxjs/add/operator/map';
 
-declare var Firebase: any;
-
 @Component({
   selector: 'page-modal',
   templateUrl: 'modal.html',
@@ -15,6 +13,7 @@ export class Modal {
   gummyURL: any = 'https://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY';
   searchUrl: any = '';
   searchKey: any = '';
+  searchResults: any;
 
   constructor(
     public navCtrl: NavController,
@@ -36,18 +35,9 @@ export class Modal {
       key: this.searchKey
     }
 
-    this.http.post('http://localhost:8080/itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+    this.http.post(this.serverAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
       console.log(data);
+      this.searchResults = data.results;
     })
-    // this.http.post('http://localhost:8080/', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Price',
-    //     subTitle: 'The current price for the item is $'+data.price,
-    //     buttons: ['OK']
-    //   });
-    //   alert.present();
-    // }, err => {
-    //   console.log(err);
-    // });
   }
 }

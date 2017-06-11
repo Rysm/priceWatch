@@ -12,5 +12,17 @@
   <button ion-button full icon-only (click)="onSearch()">
     <ion-icon name="search"></ion-icon>
   </button>
-
+  <ion-list>
+    <ion-card *ngFor="let item of searchResults">
+      <img src={{item.MediumImage[0].URL}} />
+      <ion-card-content>
+        <ion-card-title>{{item.ItemAttributes[0].Label}}</ion-card-title>
+        <p>Current Price: ${{item.ItemAttributes[0].ListPrice[0].Amount}}</p>
+      </ion-card-content>
+      <button ion-button full icon-right (click)="addItem()">
+        Add Item
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-card>
+  </ion-list>
 </ion-content>
