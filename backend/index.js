@@ -12,6 +12,12 @@ app.use(cors());
 // Deals with getting request in json form
 app.use(bodyParser.json());
 
+var client = amazon.createClient({
+  awsId: "AKIAJEJFUZ4XDBYA75RQ",
+  awsSecret: "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",
+  awsTag: "andyliwang-20"
+});
+
 // Initial expressJS page grab by client request
 app.post('/', (req, res) => {
   const priceFinder = new PriceFinder();
