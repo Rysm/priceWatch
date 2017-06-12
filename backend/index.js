@@ -13,8 +13,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 var client = amazon.createClient({
-  awsId: "AKIAJL2DMUVTIJB7BW6Q",
-  awsSecret: "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",
+  awsId: "AKIAIE5I25ZJQM2PTJHQ",
+  awsSecret: "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",
   awsTag: "andyliwang-20"
 });
 
