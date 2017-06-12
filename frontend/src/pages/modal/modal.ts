@@ -15,7 +15,7 @@ export class Modal {
   // Our server hosted on Google
   serverAPI: any = 'http://lithe-climber-167308.appspot.com/';
   // Local server for development
-  localAPI: any = 'http://localhost:8080/';
+  localAPI: any = 'htp://localhost:8080/';
   // Url to be searched
   searchUrl: any = '';
   // Keyword to be searched
