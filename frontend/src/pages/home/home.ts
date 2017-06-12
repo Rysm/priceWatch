@@ -1,42 +1,27 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController, AlertController } from 'ionic-angular';
-
 import { AuthData } from '../../providers/auth-data';
 import { Login } from '../login/login';
 import { Modal } from '../modal/modal';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
 import firebase from 'firebase';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
+  // List of items user is watching
   wishList: any;
-  posts: any;
 
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public authData: AuthData,
-    private  http: Http
-  ) {
-    this.http = http;
-    this.navCtrl = navCtrl;
-    //nice
+  ) { }
 
-
-    this.http.get('https://www.reddit.com/r/gifs/new/.json?limit=1').map(res => res.json()).subscribe(data => {
-      //  this.posts = data.data.children;
-      },
-      err => {
-      console.log("Oops!");
-      });
-    };
-
-
+  // Initialize wishlist by hardcoding it
   ionViewWillEnter() {
     this.wishList = [
       {
@@ -88,6 +73,5 @@ export class HomePage {
 
     //gets the dank user id
     var user = firebase.auth().currentUser;
-    console.log("user id " + user.uid);
   }
 }
