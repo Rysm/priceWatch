@@ -16,7 +16,6 @@ var client = amazon.createClient({
 
 });
 
-// Initial expressJS page grab by client request
 app.post('/', (req, res) => {
   const priceFinder = new PriceFinder();
   const url = req.body.url;

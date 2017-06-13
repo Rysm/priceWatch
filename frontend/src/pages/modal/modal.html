@@ -8,6 +8,22 @@
 </ion-header>
 
 <ion-content padding>
+
+    <h3>Price Threshold</h3>
+
+  	<ion-list>
+  	  <ion-item>
+  		<ion-label>Choose a range</ion-label>
+  		<ion-select [(ngModel)]="pThreshold">
+  			<ion-option *ngFor = "let option of priceThreshold" > ≥ ${{option}}</ion-option>
+  		</ion-select>
+  	  </ion-item>
+  	</ion-list>
+
+
+  	<button ion-button color="primary" block (click)="showPrompt()">Set a Custom Price Threshold</button>
+
+
   <ion-searchbar [(ngModel)]="searchKey"></ion-searchbar>
   <button ion-button full icon-only (click)="onSearch()">
     <ion-icon name="search"></ion-icon>
@@ -43,6 +59,7 @@
       <ion-input #thirdURL formControlName="thirdURL" placeholder="third URL">
         </ion-input>
     </ion-item>
+
     <button ion-button block type="submit">
       Add By URL
     </button>
