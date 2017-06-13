@@ -13,12 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 var client = amazon.createClient({
-  awsId: "AKIAIE5I25ZJQM2PTJHQ",
-  awsSecret: "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",
-  awsTag: "andyliwang-20"
+
 });
 
-// Initial expressJS page grab by client request
 app.post('/', (req, res) => {
   const priceFinder = new PriceFinder();
   const url = req.body.url;
