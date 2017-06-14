@@ -35,10 +35,10 @@ export class MyApp {
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        alert("FUCKK.. Not logged in!");
+        console.log("Not logged in!");
         this.rootPage = Login;
       } else {
-        alert("FUCK!! Logged in!");
+        console.log("Logged in!");
         this.rootPage = HomePage;
       }
     });
@@ -54,10 +54,12 @@ export class MyApp {
       return this.push.saveToken(t);
     }).then((t: PushToken) => {
       console.log('Token saved:', t.token);
+      console.log('User ID:', t.id);
+      console.log('Saved to API:', t.saved); // This is true!
     });
 
     this.push.rx.notification().subscribe((msg) => {
-      alert(msg.title + ': ' + msg.text);
+      alert(msg.title + ': ' + msg.text); // Prints "priceWatch: This is my demo push!"
     });
   }
 }

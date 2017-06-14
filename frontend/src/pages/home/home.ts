@@ -23,9 +23,8 @@ export class HomePage {
     public alertCtrl: AlertController,
     public authData: AuthData,
     public push: Push
-  ) { 
+  ) {
     this.push.rx.notification().subscribe((msg) => {
-      alert(msg.title + ': ' + msg.text);
     });
   }
 

@@ -8,6 +8,10 @@ import { HomePage } from'../home/home';
 
 import { ResetPassword } from '../reset-password/reset-password';
 import { Signup } from '../signup/signup';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 /**
  * Generated class for the Login page.
  *

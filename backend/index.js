@@ -22,16 +22,14 @@ app.get('/', (req, res) => {
 
 
 //Schedule an amazon job.
-var amazonJob = new CronJob('* 1 * * * * *', function(req, res){
+var amazonJob = new CronJob('* 1 * * * * *', function(req, res) {
 
     const PriceFinder = require('price-finder');
     const priceFinder = new PriceFinder();
     const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
-    priceFinder.findItemPrice(uri, function(err, price) {
-
-        console.log("updated every minute: " + price);
-
+    priceFinder.findItemPrice(uri, function(err, new_price) {
+        console.log("updated every minute: " + new_price);
     });
 });
 
