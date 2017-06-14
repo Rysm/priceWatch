@@ -35,7 +35,7 @@
         <ion-card-title>{{item.ItemAttributes[0].Label}}</ion-card-title>
         <p>Current Price: ${{item.ItemAttributes[0].ListPrice[0].Amount}}</p>
       </ion-card-content>
-      <button ion-button full icon-right (click)="addItem()">
+      <button ion-button full icon-right (click)="addItem(item)">
         Add Item
         <ion-icon name="add"></ion-icon>
       </button>

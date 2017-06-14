@@ -78,6 +78,7 @@ app.post('/itemSearch', (req, res) => {
 })
 
 //Handles post request from add item
+<<<<<<< HEAD
 app.post('/addItem', (req, res)){
 
     var result;
@@ -98,6 +99,10 @@ app.post('/addItem', (req, res)){
     updateServe(result);
 
 }
+
+app.post('/addItem', (req, res) =>  {
+  res.json({'success': true});
+})
 
 const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
