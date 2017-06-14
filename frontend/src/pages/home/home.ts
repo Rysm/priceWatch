@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class HomePage {
   // List of items user is watching
   wishList: any = [];
+  arr: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -27,6 +28,7 @@ export class HomePage {
     var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
     ref.on('child_added', snapshot => {
       this.wishList.push(JSON.parse(snapshot.val()));
+      this.arr.push(snapshot.key);
     });
   }
 
@@ -55,8 +57,21 @@ export class HomePage {
     alert.present();
   }
 
+  doRefresh(refresher) {
+    setTimeout(() => {
+      location.reload();
+      refresher.complete();
+    }, 2000);
+  }
+
   addWatch() {
     let modal = this.modalCtrl.create(Modal);
     modal.present();
+  }
+
+  deleteItem(key) {
+    var user = firebase.auth().currentUser;
+    var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
+    ref.child(this.arr[key]).remove();
   }
 }
