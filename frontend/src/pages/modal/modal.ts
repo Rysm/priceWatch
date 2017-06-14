@@ -44,7 +44,7 @@ export class Modal {
       key: this.searchKey
     }
 
-    this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+    this.http.post(this.serverAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
       console.log(data);
       if(data.success) {
         this.foundSearchResults = true;
@@ -111,7 +111,7 @@ export class Modal {
       text: 'OK',
       handler: data => {
         console.log(data);
-        this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+        this.http.post(this.serverAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
           if(data.success) {
             ref.push(JSON.stringify(reqBody));
             let toast = this.toastCtrl.create({
