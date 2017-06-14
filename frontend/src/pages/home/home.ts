@@ -19,7 +19,7 @@ export class HomePage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public authData: AuthData,
+    public authData: AuthData
   ) { }
 
   // Initialize wishlist by hardcoding it

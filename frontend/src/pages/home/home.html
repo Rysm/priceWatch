@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons>
-      <button ion-button icon-only (click)="logOut()">
-        <ion-icon name="log-out"></ion-icon>
+    <ion-buttons end>
+      <button ion-button icon-only color="primary" (click)="logOut()">
+        <ion-icon name="ios-power"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Home</ion-title>
@@ -14,7 +14,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <button ion-button full color="dank" icon-right (click)="addWatch()">
+  <button ion-button full icon-right (click)="addWatch()">
     Watch
     <ion-icon name="add-circle"></ion-icon>
   </button>
