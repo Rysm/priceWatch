@@ -12,35 +12,12 @@ app.use(cors());
 // Deals with getting request in json form
 app.use(bodyParser.json());
 
-/*
-Structure:
-
-  products:{
-            urls: {
-                    a: {user1.id, user2.id},
-                    b: {user1.id, user2.id},
-                    c: {user1.id, user2.id}
-                  },
-            lastPrice: 123212323231231233.12,
-  }
-
-*/
 //Server's own Dictionary
-var serverDict = {};
-//Empty array to place into dictionary
-serverDict['products'] = []; //reference serverDict[key] to push to it
-
-//console.log(serverDict);
-
-//Function that updates the server dictionary after certain requests are made
-//user, url, price
-function updateServe(result){
-
-  serverDict['products'].push(result.url);
-
-  console.log(serverDict);
-
-}
+var serverDict = [];
+//URL JOBS
+var allURL = [];
+//
+var currURL;
 
 var client = amazon.createClient({
   awsId: "AKIAIVR5HQAG2XVERBOQ",
@@ -57,7 +34,6 @@ app.post('/', (req, res) => {
     res.json({'price': price});
   });
 
-  amazonJob.start();
 });
 
 // Handles request for item search
@@ -80,33 +56,68 @@ app.post('/itemSearch', (req, res) => {
 app.post('/addItem', (req, res)=>{
 
     var result;
+
     var string = "";
 
-    //Convert the input
-    req.on('data', function(data){
-      string += data.toString();
-    });
+    result = req.body;
 
-    //Parse it into JSON bois
-    req.on('end', function(){
-      result = JSON.parse(string);
-    });
-
-    res.json(result);
+    console.log("result : " + result.title);
 
     updateServe(result);
+
+    res.json({"success":true});
 })
 
-const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
-
 //Schedule an amazon job.
-var amazonJob = new CronJob('* * 1 * * * *', function(req, res, uri) {
+var amazonJob = new CronJob('* 1 * * * * *', function(req, res, uri) {
+
+  console.log("started a new cronjob at" + currURL);
+
   const priceFinder = new PriceFinder();
-  priceFinder.findItemPrice(uri, function(err, price) {
+
+  priceFinder.findItemPrice(currURL, function(err, price) {
     console.log("updated every minute: " + price);
     myPrice = price;
   });
 });
+
+
+//Function that updates the server dictionary after certain requests are made
+//user, url, price
+function updateServe(swag){
+
+  var currTitle = swag.title;
+  var currPrice = swag.price;
+
+  //if (!(serverDict.includes(currTitle) )){
+
+    console.log("Does not exist in our dictionary yet");
+
+    //build it
+    var addObj = {
+        title: swag.title,
+        price: swag.price,
+        users: swag.user,
+        url: swag.url,
+      };
+
+      //add the title to the first layer
+      serverDict.push( addObj );
+
+      allURL.push(serverDict[0].url);
+
+      currURL = serverDict[0].url;
+
+      //start a new cronjob if url does not exist
+
+      amazonJob.start();
+
+//  }
+
+//  else{
+    //idk lmao
+//  }
+}
 
 // Start the server
 const PORT = process.env.PORT || 8080;

@@ -57,8 +57,6 @@ export class Modal {
           //where to save shit
           var ref = fireDB.ref(url);
 
-
-
           //Attach the urls
           ref.update({
             "products": {
@@ -136,7 +134,7 @@ export class Modal {
     headers.append('Content-Type', 'application/json');
 
     var reqBody = {
-      user: user,
+      user: user.uid,
       url: itemUrl,
       title: itemTitle,
       price: itemPrice
