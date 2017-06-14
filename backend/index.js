@@ -3,9 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const amazon = require('amazon-product-api');
-const CronJob = require('cron').CronJob;
+const CronJobManager = require('cron-job-manager');
 const PriceFinder = require('price-finder');
 const app = express();
+const time = require('time');
 
 // Deals with cross origin access
 app.use(cors());
@@ -18,6 +19,22 @@ var serverDict = [];
 var allURL = [];
 //
 var currURL;
+
+
+
+//CRON JOB MANAGER
+var jobManager = new CronJobManager( // this creates a new manager and adds the arguments as a new job.
+  'a_key_string_to_call_this_job',
+  '0 30 * * * *', // the crontab schedule
+  function() { console.log("tick - what should be executed?") },
+{
+// extra options..
+// see https://github.com/ncb000gt/node-cron/blob/master/README.md for all available
+  start:true,
+  timeZone:"America/Los_Angeles",
+  completion: function() {console.log("a_key_string_to_call_this_job has stopped....")}
+}
+);
 
 var client = amazon.createClient({
   awsId: "AKIAIVR5HQAG2XVERBOQ",
@@ -68,26 +85,13 @@ app.post('/addItem', (req, res)=>{
     res.json({"success":true});
 })
 
-//Schedule an amazon job.
-var amazonJob = new CronJob('* 1 * * * * *', function(req, res, uri) {
-
-  console.log("started a new cronjob at" + currURL);
-
-  const priceFinder = new PriceFinder();
-
-  priceFinder.findItemPrice(currURL, function(err, price) {
-    console.log("updated every minute: " + price);
-    myPrice = price;
-  });
-});
-
-
 //Function that updates the server dictionary after certain requests are made
 //user, url, price
 function updateServe(swag){
 
   var currTitle = swag.title;
   var currPrice = swag.price;
+  var amazonJob
 
   //if (!(serverDict.includes(currTitle) )){
 
@@ -106,17 +110,27 @@ function updateServe(swag){
 
       allURL.push(serverDict[0].url);
 
-      currURL = serverDict[0].url;
+      currURL = serverDict[serverDict.length-1].url;
+
+      var okay = "okay" + (allURL-1);
 
       //start a new cronjob if url does not exist
+      jobManager.add(currURL, '0 40 * * * *', function() { console.log('tick...')
 
-      amazonJob.start();
+                console.log("started a new cronjob at" + currURL);
 
-//  }
+                const priceFinder = new PriceFinder();
 
-//  else{
-    //idk lmao
-//  }
+                priceFinder.findItemPrice(currURL, function(err, price) {
+                  console.log("updated every minute: " + price);
+                  myPrice = price;
+                });
+
+      });
+
+      jobManager.start(currURL);
+
+
 }
 
 // Start the server
