@@ -22,6 +22,8 @@ export class Modal {
   searchKey: any = '';
   // List returned in response of item search
   searchResults: any;
+  // Flag to render search results if found and error message otherwise
+  foundSearchResults: boolean = true;
 
   public urlForm;
 
@@ -117,8 +119,13 @@ export class Modal {
     }
 
     this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      // console.log(data);
-      this.searchResults = data.results;
+      console.log(data);
+      if(data.success) {
+        this.foundSearchResults = true;
+        this.searchResults = data.results;
+      } else {
+        this.foundSearchResults = false;
+      }
     })
   }
 
@@ -129,9 +136,6 @@ export class Modal {
     var itemUrl = item.DetailPageURL;
     var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
     var itemTitle = item.ItemAttributes[0].Title;
-
-    var itemThreshold = 0;
-
     var itemImage = item.LargeImage[0].URL;
 
     var headers = new Headers();
@@ -142,7 +146,7 @@ export class Modal {
       url: itemUrl,
       title: itemTitle,
       price: itemPrice,
-
+      image: itemImage
     }
 
     this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {

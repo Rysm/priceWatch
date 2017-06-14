@@ -45,9 +45,13 @@ app.post('/itemSearch', (req, res) => {
     responseGroup: 'ItemAttributes,Offers,Images'
   }, function(err, results, response) {
     if(err) {
-      console.log(err.Error);
+      console.log(err);
+      res.json({'success': false});
+    } else if(!results) {
+      console.log(err);
+      res.json({'success': false});
     } else {
-      res.json({'results': results});
+      res.json({'success': true, 'results': results});
     }
   })
 
@@ -118,7 +122,7 @@ function updateServe(swag){
             }
           });
 
-          sendPush(json);
+          // sendPush(json);
 
         });
 
