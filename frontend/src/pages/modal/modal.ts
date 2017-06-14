@@ -24,8 +24,8 @@ export class Modal {
   searchResults: any;
   // Flag to render search results if found and error message otherwise
   foundSearchResults: boolean = true;
-
-  public urlForm;
+  // Initial price threshold
+  priceThreshold: any = [1, 5, 10, 25, 50, 100];
 
   constructor(
     public navCtrl: NavController,
@@ -34,79 +34,7 @@ export class Modal {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public formBuilder: FormBuilder
-  ) {
-    this.urlForm = formBuilder.group({
-        firstURL: ['',],
-        secondURL: ['',],
-        thirdURL: ['',]
-    })
-  }
-
-  //processes the dank urls and add them to the firedank
-  manualAdd() {
-
-      if (!this.urlForm.valid) {
-          console.log(this.urlForm.value);
-      }
-
-      else{
-          //gets the dank user id
-          var user = firebase.auth().currentUser;
-          var fireDB = firebase.database();
-          var url = "userProfile/" + user.uid;
-          //console.log("user id " + user.uid);
-
-          //where to save shit
-          var ref = fireDB.ref(url);
-
-          //Attach the urls
-          ref.update({
-            "products": {
-              1: this.urlForm.value.firstURL,
-              2: this.urlForm.value.secondURL,
-              3: this.urlForm.value.thirdURL,
-            }
-          });
-
-          firebase.auth().currentUser.getToken(/* forceRefresh */ true).then(function(idToken) {
-            // Send token to your backend via HTTPS
-            // ...
-          }).catch(function(error) {
-            // Handle error
-          });
-
-      }
-
-    }
-
-    //price threshold stuff
-  	priceThreshold: any = [1, 5, 10, 25, 50, 100];
-
-     showPrompt() {
-      let prompt = this.alertCtrl.create({
-        title: 'Custom Price',
-        message: "Enter a Threshold for your price:",
-        inputs: [
-          {
-            name: 'customPrice',
-            placeholder: 'e.g. 9.37',
-  		  type: 'number'
-          },
-        ],
-        buttons: [
-          {
-            text: 'Confirm',
-            handler: data => {
-              console.log('Confirm clicked');
-  			this.priceThreshold.push(data.customPrice);
-  			console.log(data.customPrice);
-
-  		  }
-          }
-        ]
-      });
-      prompt.present();
-    }
+  ) { }
 
   // On keyword search
   onSearch() {
@@ -149,25 +77,64 @@ export class Modal {
       image: itemImage
     }
 
-    this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      if(data.success) {
-        ref.push(JSON.stringify(reqBody));
-        let toast = this.toastCtrl.create({
-          message: 'Item added successfully',
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        this.close();
-      } else {
-        let toast = this.toastCtrl.create({
-          message: 'Failed to add item',
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Lightsaber color');
+
+    alert.addInput({
+      type: 'radio',
+      label: '> $1',
+      value: '1',
+      checked: true
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $5',
+      value: '5',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $10',
+      value: '10',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $25',
+      value: '25',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $50',
+      value: '50',
+    });
+
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data);
+        this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+          if(data.success) {
+            ref.push(JSON.stringify(reqBody));
+            let toast = this.toastCtrl.create({
+              message: 'Item added successfully',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+            this.close();
+          } else {
+            let toast = this.toastCtrl.create({
+              message: 'Failed to add item',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          }
+        })
       }
-    })
+    });
+    alert.present();
   }
 
   // Close modal
