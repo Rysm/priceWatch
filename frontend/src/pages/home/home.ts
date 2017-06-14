@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 })
 export class HomePage {
   // List of items user is watching
-  wishList: any;
+  wishList: any = [];
 
   constructor(
     public navCtrl: NavController,
@@ -23,23 +23,11 @@ export class HomePage {
 
   // Initialize wishlist by hardcoding it
   ionViewWillEnter() {
-    this.wishList = [
-      {
-        'name': 'Gummy',
-        'price': 19.99,
-        'img': '../../assets/gummy.png'
-      },
-      {
-        'name': 'Yerba Mate',
-        'price': 4.00,
-        'img': '../../assets/yerba.png'
-      },
-      {
-        'name': 'Mac',
-        'price': 200,
-        'img': '../../assets/mac.png'
-      },
-    ]
+    var user = firebase.auth().currentUser;
+    var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
+    ref.on('child_added', snapshot => {
+      this.wishList.push(JSON.parse(snapshot.val()));
+    });
   }
 
   logOut() {

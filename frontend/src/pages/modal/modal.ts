@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import firebase from 'firebase';
 import 'rxjs/add/operator/map';
@@ -14,7 +14,6 @@ export class Modal {
 
   // Our server hosted on Google
   serverAPI: any = 'http://lithe-climber-167308.appspot.com/';
-  
   // Local server for development
   localAPI: any = 'http://localhost:8080/';
   // Url to be searched
@@ -31,6 +30,7 @@ export class Modal {
     public navParams: NavParams,
     private http: Http,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     public formBuilder: FormBuilder
   ) {
     this.urlForm = formBuilder.group({
@@ -77,11 +77,6 @@ export class Modal {
 
     }
 
-  close() {
-    this.navCtrl.pop();
-  }
-
-
     //price threshold stuff
   	priceThreshold: any = [1, 5, 10, 25, 50, 100];
 
@@ -111,7 +106,7 @@ export class Modal {
       prompt.present();
     }
 
-  //search funcitonality
+  // On keyword search
   onSearch() {
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -122,16 +117,19 @@ export class Modal {
     }
 
     this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.searchResults = data.results;
     })
   }
 
+  // On add item from search results
   addItem(item) {
     var user = firebase.auth().currentUser;
+    var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
     var itemUrl = item.DetailPageURL;
     var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
     var itemTitle = item.ItemAttributes[0].Title;
+    var itemImage = item.LargeImage[0].URL;
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -140,12 +138,33 @@ export class Modal {
       user: user,
       url: itemUrl,
       title: itemTitle,
-      price: itemPrice
+      price: itemPrice,
+      image: itemImage
     }
 
-    this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      console.log(data);
-      this.searchResults = data.results;
+    this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+      if(data.success) {
+        ref.push(JSON.stringify(reqBody));
+        let toast = this.toastCtrl.create({
+          message: 'Item added successfully',
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        this.close();
+      } else {
+        let toast = this.toastCtrl.create({
+          message: 'Failed to add item',
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+      }
     })
+  }
+
+  // Close modal
+  close() {
+    this.navCtrl.pop();
   }
 }
