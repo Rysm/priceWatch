@@ -70,8 +70,5 @@ export class HomePage {
   addWatch() {
     let modal = this.modalCtrl.create(Modal);
     modal.present();
-
-    //gets the dank user id
-    var user = firebase.auth().currentUser;
   }
 }

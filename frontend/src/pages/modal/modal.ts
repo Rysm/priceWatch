@@ -112,12 +112,34 @@ export class Modal {
 
   //search funcitonality
   onSearch() {
-    let headers = new Headers();
+    var headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    let reqBody = {
+    var reqBody = {
       url: this.searchUrl,
       key: this.searchKey
+    }
+
+    this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+      console.log(data);
+      this.searchResults = data.results;
+    })
+  }
+
+  addItem(item) {
+    var user = firebase.auth().currentUser;
+    var itemUrl = item.DetailPageURL;
+    var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
+    var itemTitle = item.ItemAttributes[0].Title;
+
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    var reqBody = {
+      user: user,
+      url: itemUrl,
+      title: itemTitle,
+      price: itemPrice
     }
 
     this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
