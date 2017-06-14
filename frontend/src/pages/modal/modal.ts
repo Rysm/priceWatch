@@ -77,33 +77,36 @@ export class Modal {
       tag: 'AddItem'
     }
 
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Lightsaber color');
-
+    let alert = this.alertCtrl.create({
+      title: 'Choose A Price Drop!',
+      subTitle: "Notify me when this item's price drops by more than...",
+    });
+    // alert.setTitle('Choose A Price Drop Threshold.');
+    // alert.setSubTitle("You will be notified when this item's price drops below the threshold.");
     alert.addInput({
       type: 'radio',
-      label: '> $1',
+      label: '    $1',
       value: '1',
       checked: true
     });
     alert.addInput({
       type: 'radio',
-      label: '> $5',
+      label: '    $5',
       value: '5',
     });
     alert.addInput({
       type: 'radio',
-      label: '> $10',
+      label: '    $10',
       value: '10',
     });
     alert.addInput({
       type: 'radio',
-      label: '> $25',
+      label: '    $25',
       value: '25',
     });
     alert.addInput({
       type: 'radio',
-      label: '> $50',
+      label: '    $50',
       value: '50',
     });
 
