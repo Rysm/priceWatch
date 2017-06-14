@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const amazon = require('amazon-product-api');
 const CronJob = require('cron').CronJob;
 const PriceFinder = require('price-finder');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const app = express();
 
 // Deals with cross origin access
@@ -98,18 +99,54 @@ function updateServe(swag){
       currName = currURL.toString();
 
       //start a new cronjob if url does not exi
-      currName = new CronJob('5 * * * * *', function() {
+      currName = new CronJob('0 1 * * * * *', function() {
 
         console.log('You will see this message every second');
         const priceFinder = new PriceFinder();
 
         priceFinder.findItemPrice(currURL, function(err, price) {
+
           console.log("Current price " +   currPrice);
+
+          var message = "The current price: " + currPrice;
+
+          var json = JSON.stringify({
+            "send_to_all": true,
+            "profile": "pricewatchshit",
+            "notification": {
+                "message": message,
+            }
+          });
+
+          sendPush(json);
 
         });
 
       }, null, true, 'America/Los_Angeles');
 }
+// Code for testing push via a POST request
+
+var sendPush = function(json) {
+  // Make POST request to all users
+  console.log("Processing the push...");
+
+  var http = new XMLHttpRequest();
+  var url = "https://api.ionic.io/push/notifications";
+
+  console.log(json);
+
+  http.open("POST", url, true);
+  //Send the proper header information along with the request
+  http.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzMGM4OWJjYS0wZDk0LTRkM2EtYjlhNC0yM2Y0MzdhMDYxYzYifQ.n5rvKyQF2r-TchepavQ4togu31DMoDTxciKOrHm7W-M");
+  http.setRequestHeader("Content-Type", "application/json");
+
+  http.onreadystatechange = function() { //Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 201) {
+          console.log(http.responseText);
+      }
+  };
+  http.send(json);
+};
 
 // Start the server
 const PORT = process.env.PORT || 8080;

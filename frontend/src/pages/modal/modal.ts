@@ -129,6 +129,7 @@ export class Modal {
     var itemUrl = item.DetailPageURL;
     var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
     var itemTitle = item.ItemAttributes[0].Title;
+    var itemThreshold = 0;
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -137,7 +138,8 @@ export class Modal {
       user: user.uid,
       url: itemUrl,
       title: itemTitle,
-      price: itemPrice
+      price: itemPrice,
+      threshold: itemThreshold,
     }
 
     this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
