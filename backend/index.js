@@ -38,6 +38,8 @@ function updateServe(result){
 
   serverDict['products'].push(result.url);
 
+  console.log(serverDict);
+
 }
 
 var client = amazon.createClient({
