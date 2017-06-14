@@ -118,7 +118,7 @@ function updateServe(swag){
             }
           });
 
-          sendPush(json);
+    //      sendPush(json);
 
         });
 

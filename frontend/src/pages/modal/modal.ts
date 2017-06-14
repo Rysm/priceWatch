@@ -142,7 +142,7 @@ export class Modal {
       url: itemUrl,
       title: itemTitle,
       price: itemPrice,
-
+      image: itemImage
     }
 
     this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
