@@ -30,10 +30,10 @@
   </button>
   <ion-list>
     <ion-card *ngFor="let item of searchResults">
-      <img src={{item.MediumImage[0].URL}} />
+      <img src={{item.LargeImage[0].URL}} />
       <ion-card-content>
-        <ion-card-title>{{item.ItemAttributes[0].Label}}</ion-card-title>
-        <p>Current Price: ${{item.ItemAttributes[0].ListPrice[0].Amount}}</p>
+        <ion-card-title>{{item.ItemAttributes[0].Title}}</ion-card-title>
+        <p>Current Price: ${{item.ItemAttributes[0].ListPrice[0].FormattedPrice}}</p>
       </ion-card-content>
       <button ion-button full icon-right (click)="addItem(item)">
         Add Item
