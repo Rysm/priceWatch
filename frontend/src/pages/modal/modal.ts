@@ -41,10 +41,11 @@ export class Modal {
 
     var reqBody = {
       url: this.searchUrl,
-      key: this.searchKey
+      key: this.searchKey,
+      tag: 'SearchItem'
     }
 
-    this.http.post(this.serverAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+    this.http.post(this.serverAPI, reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
       console.log(data);
       if(data.success) {
         this.foundSearchResults = true;
@@ -72,7 +73,8 @@ export class Modal {
       url: itemUrl,
       title: itemTitle,
       price: itemPrice,
-      image: itemImage
+      image: itemImage,
+      tag: 'AddItem'
     }
 
     let alert = this.alertCtrl.create();
@@ -111,7 +113,7 @@ export class Modal {
       text: 'OK',
       handler: data => {
         console.log(data);
-        this.http.post(this.serverAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+        this.http.post(this.serverAPI, reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
           if(data.success) {
             ref.push(JSON.stringify(reqBody));
             let toast = this.toastCtrl.create({

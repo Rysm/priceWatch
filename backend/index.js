@@ -32,34 +32,25 @@ app.post('/', (req, res) => {
 
   priceFinder.findItemPrice(url, function(err, price) {
     console.log("Current price " +   price);
-    res.json({'price': price});
+    // res.json({'price': price});
   });
 
-});
-
-// Handles request for item search
-app.post('/itemSearch', (req, res) => {
-
-  client.itemSearch({
-    keywords: req.body.key,
-    responseGroup: 'ItemAttributes,Offers,Images'
-  }, function(err, results, response) {
-    if(err) {
-      console.log(err);
-      res.json({'success': false});
-    } else if(!results) {
-      console.log(err);
-      res.json({'success': false});
-    } else {
-      res.json({'success': true, 'results': results});
-    }
-  })
-
-})
-
-//Handles post request from add item
-app.post('/addItem', (req, res)=>{
-
+  if(req.body.tag == 'SearchItem') {
+    client.itemSearch({
+      keywords: req.body.key,
+      responseGroup: 'ItemAttributes,Offers,Images'
+    }, function(err, results, response) {
+      if(err) {
+        console.log(err);
+        res.json({'success': false});
+      } else if(!results) {
+        console.log(err);
+        res.json({'success': false});
+      } else {
+        res.json({'success': true, 'results': results});
+      }
+    })
+  } else if (req.body.tag == 'AddItem') {
     var result;
 
     var string = "";
@@ -71,7 +62,44 @@ app.post('/addItem', (req, res)=>{
     updateServe(result);
 
     res.json({"success":true});
-})
+  }
+});
+
+// Handles request for item search
+// app.post('/itemSearch', (req, res) => {
+//
+//   client.itemSearch({
+//     keywords: req.body.key,
+//     responseGroup: 'ItemAttributes,Offers,Images'
+//   }, function(err, results, response) {
+//     if(err) {
+//       console.log(err);
+//       res.json({'success': false});
+//     } else if(!results) {
+//       console.log(err);
+//       res.json({'success': false});
+//     } else {
+//       res.json({'success': true, 'results': results});
+//     }
+//   })
+//
+// })
+//
+// //Handles post request from add item
+// app.post('/addItem', (req, res)=>{
+//
+//     var result;
+//
+//     var string = "";
+//
+//     result = req.body;
+//
+//     console.log("result : " + result.title);
+//
+//     updateServe(result);
+//
+//     res.json({"success":true});
+// })
 
 //Function that updates the server dictionary after certain requests are made
 //user, url, price
