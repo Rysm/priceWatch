@@ -16,18 +16,32 @@ app.use(bodyParser.json());
 Structure:
 
 serverDict = {
-  urls: a: {user1.id, user2.id},
-        b: {user1.id, user2.id},
-        c: {user1.id, user2.id},
+  products:{
+    urls: {
+            a: {user1.id, user2.id},
+            b: {user1.id, user2.id},
+            c: {user1.id, user2.id}
+          },
+    lastPrice: 123212323231231233.12,
+
+
+  }
 }
 */
 //Server's own Dictionary
 var serverDict = {};
 //Empty array to place into dictionary
-serverDict['urls'] = []; //reference serverDict[key] to push to it
+serverDict['products'] = []; //reference serverDict[key] to push to it
 
-console.log(serverDict);
+//console.log(serverDict);
 
+//Function that updates the server dictionary after certain requests are made
+//user, url, price
+var updateServe =  function(result){
+
+  serverDict['products'].push(result.url);
+
+}
 
 var client = amazon.createClient({
   awsId: "AKIAIVR5HQAG2XVERBOQ",
@@ -49,6 +63,7 @@ app.post('/', (req, res) => {
 
 // Handles request for item search
 app.post('/itemSearch', (req, res) => {
+
   client.itemSearch({
     keywords: req.body.key,
     responseGroup: 'ItemAttributes,Offers,Images'
@@ -59,6 +74,7 @@ app.post('/itemSearch', (req, res) => {
       res.json({'results': results});
     }
   })
+
 })
 
 //Handles post request from add item
@@ -79,6 +95,8 @@ app.post('/addItem', (req, res)){
 
     res.json(result});
 
+    updateServe(result);
+
 }
 
 const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
@@ -91,7 +109,6 @@ var amazonJob = new CronJob('* * 1 * * * *', function(req, res, uri) {
     myPrice = price;
   });
 });
-
 
 // Start the server
 const PORT = process.env.PORT || 8080;
