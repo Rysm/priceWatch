@@ -34,35 +34,6 @@ export class Modal {
     public formBuilder: FormBuilder
   ) { }
 
-  //price threshold stuff
-	priceThreshold: any = [1, 5, 10, 25, 50, 100];
-
-   showPrompt() {
-    let prompt = this.alertCtrl.create({
-      title: 'Custom Price',
-      message: "Enter a Threshold for your price:",
-      inputs: [
-        {
-          name: 'customPrice',
-          placeholder: 'e.g. 9.37',
-		  type: 'number'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Confirm',
-          handler: data => {
-            console.log('Confirm clicked');
-			this.priceThreshold.push(data.customPrice);
-			console.log(data.customPrice);
-
-		  }
-        }
-      ]
-    });
-    prompt.present();
-  }
-
   // On keyword search
   onSearch() {
     var headers = new Headers();
@@ -104,25 +75,64 @@ export class Modal {
       image: itemImage
     }
 
-    this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      if(data.success) {
-        ref.push(JSON.stringify(reqBody));
-        let toast = this.toastCtrl.create({
-          message: 'Item added successfully',
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-        this.close();
-      } else {
-        let toast = this.toastCtrl.create({
-          message: 'Failed to add item',
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Lightsaber color');
+
+    alert.addInput({
+      type: 'radio',
+      label: '> $1',
+      value: '1',
+      checked: true
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $5',
+      value: '5',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $10',
+      value: '10',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $25',
+      value: '25',
+    });
+    alert.addInput({
+      type: 'radio',
+      label: '> $50',
+      value: '50',
+    });
+
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data);
+        this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
+          if(data.success) {
+            ref.push(JSON.stringify(reqBody));
+            let toast = this.toastCtrl.create({
+              message: 'Item added successfully',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+            this.close();
+          } else {
+            let toast = this.toastCtrl.create({
+              message: 'Failed to add item',
+              duration: 3000,
+              position: 'top'
+            });
+            toast.present();
+          }
+        })
       }
-    })
+    });
+    alert.present();
   }
 
   // Close modal
