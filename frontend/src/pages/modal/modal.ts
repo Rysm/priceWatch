@@ -117,18 +117,19 @@ export class Modal {
     }
 
     this.http.post(this.localAPI+'itemSearch', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.searchResults = data.results;
     })
   }
 
   // On add item from search results
   addItem(item) {
-    console.log(item);
     var user = firebase.auth().currentUser;
+    var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
     var itemUrl = item.DetailPageURL;
     var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
     var itemTitle = item.ItemAttributes[0].Title;
+    var itemImage = item.LargeImage[0].URL;
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -137,11 +138,13 @@ export class Modal {
       user: user,
       url: itemUrl,
       title: itemTitle,
-      price: itemPrice
+      price: itemPrice,
+      image: itemImage
     }
 
     this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
       if(data.success) {
+        ref.push(JSON.stringify(reqBody));
         let toast = this.toastCtrl.create({
           message: 'Item added successfully',
           duration: 3000,

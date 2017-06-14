@@ -17,10 +17,10 @@
 
   <ion-list>
     <ion-card *ngFor="let item of wishList">
-      <img src={{item.img}} alt={{item.name}} />
+      <img src={{item.image}} alt={{item.title}} />
       <ion-card-content>
-        <ion-card-title>{{item.name}}</ion-card-title>
-        <p>Current Price: ${{item.price}}</p>
+        <ion-card-title>{{item.title}}</ion-card-title>
+        <p>Current Price: {{item.price}}</p>
       </ion-card-content>
     </ion-card>
   </ion-list>
