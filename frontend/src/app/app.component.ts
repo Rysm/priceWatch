@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -16,11 +20,7 @@ export class MyApp {
 
   rootPage: any;
 
-  constructor(
-    platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen
-  ) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public push: Push) {
 
     // Initialize Firebase
     var config = {
@@ -35,10 +35,10 @@ export class MyApp {
     firebase.initializeApp(config);
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
-        console.log("not login");
+        console.log("Not logged in!");
         this.rootPage = Login;
       } else {
-        console.log("login");
+        console.log("Logged in!");
         this.rootPage = HomePage;
       }
     });
@@ -48,6 +48,18 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+    });
+
+    this.push.register().then((t: PushToken) => {
+      return this.push.saveToken(t);
+    }).then((t: PushToken) => {
+      console.log('Token saved:', t.token);
+      console.log('User ID:', t.id);
+      console.log('Saved to API:', t.saved); // This is true!
+    });
+
+    this.push.rx.notification().subscribe((msg) => {
+      alert(msg.title + ': ' + msg.text); // Prints "priceWatch: This is my demo push!"
     });
   }
 }

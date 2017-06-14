@@ -8,6 +8,10 @@ import { HomePage } from'../home/home';
 
 import { ResetPassword } from '../reset-password/reset-password';
 import { Signup } from '../signup/signup';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 /**
  * Generated class for the Login page.
  *
@@ -30,13 +34,14 @@ export class Login {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public authData: AuthData,
-    public nav: NavController) {
+    public nav: NavController,
+    public push: Push
+  ) {
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
-
   }
 
   loginUser(): void {
@@ -61,9 +66,6 @@ export class Login {
           alert.present();
         });
       });
-
-      this.loading = this.loadingCtrl.create();
-      this.loading.present();
     }
   }
 

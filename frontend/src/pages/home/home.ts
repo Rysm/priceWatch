@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {
+  Push,
+  PushToken
+} from '@ionic/cloud-angular';
 import { NavController, ModalController, AlertController } from 'ionic-angular';
 import { AuthData } from '../../providers/auth-data';
 import { Login } from '../login/login';
@@ -20,7 +24,11 @@ export class HomePage {
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public authData: AuthData,
-  ) { }
+    public push: Push
+  ) {
+    this.push.rx.notification().subscribe((msg) => {
+    });
+  }
 
   // Initialize wishlist by hardcoding it
   ionViewWillEnter() {

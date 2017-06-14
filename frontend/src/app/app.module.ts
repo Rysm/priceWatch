@@ -17,6 +17,26 @@ import { Modal } from '../pages/modal/modal';
 import { AuthData } from '../providers/auth-data';
 import { HttpModule } from '@angular/http';
 
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'ceb5af3e'
+  },
+  'push': {
+    'sender_id': '900764580669',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,7 +52,8 @@ import { HttpModule } from '@angular/http';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

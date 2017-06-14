@@ -39,7 +39,6 @@ app.post('/', (req, res) => {
 
 // Handles request for item search
 app.post('/itemSearch', (req, res) => {
-
   client.itemSearch({
     keywords: req.body.key,
     responseGroup: 'ItemAttributes,Offers,Images'
