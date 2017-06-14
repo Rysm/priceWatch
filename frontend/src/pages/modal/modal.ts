@@ -129,17 +129,20 @@ export class Modal {
     var itemUrl = item.DetailPageURL;
     var itemPrice = item.ItemAttributes[0].ListPrice[0].FormattedPrice;
     var itemTitle = item.ItemAttributes[0].Title;
+
+    var itemThreshold = 0;
+
     var itemImage = item.LargeImage[0].URL;
 
     var headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
     var reqBody = {
-      user: user,
+      user: user.uid,
       url: itemUrl,
       title: itemTitle,
       price: itemPrice,
-      image: itemImage
+
     }
 
     this.http.post(this.localAPI+'addItem', reqBody, {headers: headers}).map(res => res.json()).subscribe(data => {
