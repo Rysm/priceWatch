@@ -25,8 +25,6 @@ export class Modal {
   // Flag to render search results if found and error message otherwise
   foundSearchResults: boolean = true;
 
-  public urlForm;
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -34,79 +32,36 @@ export class Modal {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     public formBuilder: FormBuilder
-  ) {
-    this.urlForm = formBuilder.group({
-        firstURL: ['',],
-        secondURL: ['',],
-        thirdURL: ['',]
-    })
+  ) { }
+
+  //price threshold stuff
+	priceThreshold: any = [1, 5, 10, 25, 50, 100];
+
+   showPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: 'Custom Price',
+      message: "Enter a Threshold for your price:",
+      inputs: [
+        {
+          name: 'customPrice',
+          placeholder: 'e.g. 9.37',
+		  type: 'number'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Confirm',
+          handler: data => {
+            console.log('Confirm clicked');
+			this.priceThreshold.push(data.customPrice);
+			console.log(data.customPrice);
+
+		  }
+        }
+      ]
+    });
+    prompt.present();
   }
-
-  //processes the dank urls and add them to the firedank
-  manualAdd() {
-
-      if (!this.urlForm.valid) {
-          console.log(this.urlForm.value);
-      }
-
-      else{
-          //gets the dank user id
-          var user = firebase.auth().currentUser;
-          var fireDB = firebase.database();
-          var url = "userProfile/" + user.uid;
-          //console.log("user id " + user.uid);
-
-          //where to save shit
-          var ref = fireDB.ref(url);
-
-          //Attach the urls
-          ref.update({
-            "products": {
-              1: this.urlForm.value.firstURL,
-              2: this.urlForm.value.secondURL,
-              3: this.urlForm.value.thirdURL,
-            }
-          });
-
-          firebase.auth().currentUser.getToken(/* forceRefresh */ true).then(function(idToken) {
-            // Send token to your backend via HTTPS
-            // ...
-          }).catch(function(error) {
-            // Handle error
-          });
-
-      }
-
-    }
-
-    //price threshold stuff
-  	priceThreshold: any = [1, 5, 10, 25, 50, 100];
-
-     showPrompt() {
-      let prompt = this.alertCtrl.create({
-        title: 'Custom Price',
-        message: "Enter a Threshold for your price:",
-        inputs: [
-          {
-            name: 'customPrice',
-            placeholder: 'e.g. 9.37',
-  		  type: 'number'
-          },
-        ],
-        buttons: [
-          {
-            text: 'Confirm',
-            handler: data => {
-              console.log('Confirm clicked');
-  			this.priceThreshold.push(data.customPrice);
-  			console.log(data.customPrice);
-
-  		  }
-          }
-        ]
-      });
-      prompt.present();
-    }
 
   // On keyword search
   onSearch() {

@@ -72,6 +72,7 @@ export class HomePage {
   deleteItem(key) {
     var user = firebase.auth().currentUser;
     var ref = firebase.database().ref('userProfile/'+user.uid+'/products');
+    this.wishList.splice(key,1);
     ref.child(this.arr[key]).remove();
   }
 }
