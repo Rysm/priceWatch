@@ -20,24 +20,19 @@
   </button>
 
   <ion-list>
-    <ion-item-sliding>
-              <ion-card class="item-card" *ngFor="let item of wishList, let key = index">
-                <ion-card-title>{{item.title}}</ion-card-title>
-                <img src={{item.image}} alt={{item.title}} />
-                <ion-row>
-                  <ion-col>
-                    <p>Current Price: {{item.price}}</p>
-                  </ion-col>
-                  <ion-col>
-                    <button ion-button icon-only color="danger" (click)="deleteItem(key)">
-                      <ion-icon name="trash"></ion-icon>
-                    </button>
-                  </ion-col>
-                </ion-row>
-              </ion-card>
-                                    <ion-item-options>
-                                    <button danger (click)="removeItem(item)">< Delete</button>
-                                    </ion-item-options>
-      </ion-item-sliding>
+    <ion-card class="item-card" *ngFor="let item of wishList, let key = index">
+      <ion-card-title>{{item.title}}</ion-card-title>
+      <img src={{item.image}} alt={{item.title}} />
+      <ion-row>
+        <ion-col>
+          <p>Current Price: {{item.price}}</p>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only color="danger" (click)="deleteItem(key)">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
   </ion-list>
 </ion-content>
