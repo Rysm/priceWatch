@@ -79,11 +79,6 @@ export class Modal {
 
     }
 
-  close() {
-    this.navCtrl.pop();
-  }
-
-
     //price threshold stuff
   	priceThreshold: any = [1, 5, 10, 25, 50, 100];
 
@@ -165,5 +160,10 @@ export class Modal {
         toast.present();
       }
     })
+  }
+
+  // Close modal
+  close() {
+    this.navCtrl.pop();
   }
 }

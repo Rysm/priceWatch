@@ -23,6 +23,7 @@ export class HomePage {
 
   // Initialize wishlist by hardcoding it
   ionViewWillEnter() {
+    
     this.wishList = [
       {
         'name': 'Gummy',
