@@ -57,6 +57,8 @@ export class Modal {
           //where to save shit
           var ref = fireDB.ref(url);
 
+
+
           //Attach the urls
           ref.update({
             "products": {

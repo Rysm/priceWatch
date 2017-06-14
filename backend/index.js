@@ -15,18 +15,15 @@ app.use(bodyParser.json());
 /*
 Structure:
 
-serverDict = {
   products:{
-    urls: {
-            a: {user1.id, user2.id},
-            b: {user1.id, user2.id},
-            c: {user1.id, user2.id}
-          },
-    lastPrice: 123212323231231233.12,
-
-
+            urls: {
+                    a: {user1.id, user2.id},
+                    b: {user1.id, user2.id},
+                    c: {user1.id, user2.id}
+                  },
+            lastPrice: 123212323231231233.12,
   }
-}
+
 */
 //Server's own Dictionary
 var serverDict = {};
@@ -37,7 +34,7 @@ serverDict['products'] = []; //reference serverDict[key] to push to it
 
 //Function that updates the server dictionary after certain requests are made
 //user, url, price
-var updateServe =  function(result){
+function updateServe(result){
 
   serverDict['products'].push(result.url);
 
@@ -78,8 +75,7 @@ app.post('/itemSearch', (req, res) => {
 })
 
 //Handles post request from add item
-<<<<<<< HEAD
-app.post('/addItem', (req, res)){
+app.post('/addItem', (req, res)=>{
 
     var result;
     var string = "";
@@ -94,14 +90,9 @@ app.post('/addItem', (req, res)){
       result = JSON.parse(string);
     });
 
-    res.json(result});
+    res.json(result);
 
     updateServe(result);
-
-}
-
-app.post('/addItem', (req, res) =>  {
-  res.json({'success': true});
 })
 
 const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
