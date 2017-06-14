@@ -12,6 +12,23 @@ app.use(cors());
 // Deals with getting request in json form
 app.use(bodyParser.json());
 
+/*
+Structure:
+
+serverDict = {
+  urls: a: {user1.id, user2.id},
+        b: {user1.id, user2.id},
+        c: {user1.id, user2.id},
+}
+*/
+//Server's own Dictionary
+var serverDict = {};
+//Empty array to place into dictionary
+serverDict['urls'] = []; //reference serverDict[key] to push to it
+
+console.log(serverDict);
+
+
 var client = amazon.createClient({
   awsId: "AKIAIVR5HQAG2XVERBOQ",
   awsSecret: "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",
@@ -43,6 +60,13 @@ app.post('/itemSearch', (req, res) => {
     }
   })
 })
+
+//Handles post request from add item
+app.post('/addItem', (req, res)){
+  client.addItem({
+    res.json({'u fookin wot': 'it worker'});
+  })
+}
 
 const uri = 'http://www.amazon.com/Albanese-Candy-Sugar-Assorted-5-pound/dp/B00DE4GWWY?';
 
