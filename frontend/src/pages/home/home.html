@@ -9,14 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <button ion-button full color="secondary" icon-right (click)="addWatch()">
+<ion-content id="my-content" padding>
+  <button ion-button full color="dank" icon-right (click)="addWatch()">
     Watch
     <ion-icon name="add"></ion-icon>
   </button>
 
   <ion-list>
-    <ion-card *ngFor="let item of wishList">
+    <ion-card class="item-card" *ngFor="let item of wishList">
       <img src={{item.image}} alt={{item.title}} />
       <ion-card-content>
         <ion-card-title>{{item.title}}</ion-card-title>
