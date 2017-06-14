@@ -31,13 +31,24 @@ $colors: (
   dark:       #222,
   dank:       #f9c7c7
 );
+// $colors: (
+//   primary:    #fff,
+//   secondary:  #2A388F,
+//   danger:     #f53d3d,
+//   light:      #f4f4f4,
+//   dark:       #222,
+// );
 
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
+// $toolbar-ios-title-font-size:       2.5rem;
+// $toolbar-ios-text-color:            #fff;
+// $toolbar-ios-padding:               6px;
+// $cordova-ios-statusbar-padding:     16px;
+// $alert-ios-button-text-color:       #2A388F;
 
 
 // App Material Design Variables
@@ -76,4 +87,4 @@ $colors: (
 // --------------------------------------------------
 
 @import "roboto";
-@import "noto-sans"; 
+@import "noto-sans";
