@@ -3,10 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const amazon = require('amazon-product-api');
-const CronJobManager = require('cron-job-manager');
+const CronJob = require('cron').CronJob;
 const PriceFinder = require('price-finder');
 const app = express();
-const time = require('time');
 
 // Deals with cross origin access
 app.use(cors());
@@ -19,22 +18,6 @@ var serverDict = [];
 var allURL = [];
 //
 var currURL;
-
-
-
-//CRON JOB MANAGER
-var jobManager = new CronJobManager( // this creates a new manager and adds the arguments as a new job.
-  'a_key_string_to_call_this_job',
-  '0 30 * * * *', // the crontab schedule
-  function() { console.log("tick - what should be executed?") },
-{
-// extra options..
-// see https://github.com/ncb000gt/node-cron/blob/master/README.md for all available
-  start:true,
-  timeZone:"America/Los_Angeles",
-  completion: function() {console.log("a_key_string_to_call_this_job has stopped....")}
-}
-);
 
 var client = amazon.createClient({
   awsId: "AKIAIVR5HQAG2XVERBOQ",
@@ -91,7 +74,7 @@ function updateServe(swag){
 
   var currTitle = swag.title;
   var currPrice = swag.price;
-  var amazonJob
+  var currName;
 
   //if (!(serverDict.includes(currTitle) )){
 
@@ -108,29 +91,24 @@ function updateServe(swag){
       //add the title to the first layer
       serverDict.push( addObj );
 
-      allURL.push(serverDict[0].url);
+      allURL.push(serverDict[swag.url]);
 
       currURL = serverDict[serverDict.length-1].url;
 
-      var okay = "okay" + (allURL-1);
+      currName = currURL.toString();
 
-      //start a new cronjob if url does not exist
-      jobManager.add(currURL, '0 40 * * * *', function() { console.log('tick...')
+      //start a new cronjob if url does not exi
+      currName = new CronJob('5 * * * * *', function() {
 
-                console.log("started a new cronjob at" + currURL);
+        console.log('You will see this message every second');
+        const priceFinder = new PriceFinder();
 
-                const priceFinder = new PriceFinder();
+        priceFinder.findItemPrice(currURL, function(err, price) {
+          console.log("Current price " +   currPrice);
 
-                priceFinder.findItemPrice(currURL, function(err, price) {
-                  console.log("updated every minute: " + price);
-                  myPrice = price;
-                });
+        });
 
-      });
-
-      jobManager.start(currURL);
-
-
+      }, null, true, 'America/Los_Angeles');
 }
 
 // Start the server
